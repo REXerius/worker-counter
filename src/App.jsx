@@ -14,7 +14,7 @@ function App() {
       <Flex
         justify="center"
         align="center"
-        style={{ width: "100vw", height: "100vh" }}
+        style={{ width: "100vw", height: "100%" }}
       >
         <Card
           title={
@@ -28,7 +28,7 @@ function App() {
           bordered={false}
           style={{
             width: window.innerWidth < 1001 ? "100%" : "50%",
-            height: "90vh",
+            height: "auto",
           }}
         >
           {sc === "Worker" ? (
