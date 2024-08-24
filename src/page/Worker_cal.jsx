@@ -106,7 +106,7 @@ const Worker_cal = () => {
         okText="ตกลง"
         cancelText="ยกเลิก"
       >
-        {bigbox.borrow ? (
+        {bigbox ? (
           <>
             จำนวนเวลาทำงานทั้งหมด : {bigbox.workingcount} <br />
             จำนวนรายได้ทั้งหมด (คูณด้วยค่าแรง) : {bigbox.summoney} <br />
