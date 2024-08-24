@@ -1,0 +1,8 @@
+{
+  "rules": {
+    "worker_record": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}
