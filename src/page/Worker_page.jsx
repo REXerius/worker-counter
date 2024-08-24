@@ -10,6 +10,7 @@ import {
   Popconfirm,
   message,
   Table,
+  InputNumber,
 } from "antd";
 
 const Worker_page = () => {
@@ -17,7 +18,10 @@ const Worker_page = () => {
     rt_database();
   const [bigdata, setBigdata] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form] = Form.useForm();
+  const [iseditModalOpen, setIsEditModalOpen] = useState(false);
+  const [createForm] = Form.useForm();
+  const [editForm] = Form.useForm();
+  const [editItems, setEdititems] = useState({});
 
   useEffect(() => {
     // const dataRef = ref(database, "worker_record");
@@ -27,11 +31,22 @@ const Worker_page = () => {
   const callData = async () => {
     const take = await getWorkerRec();
     setBigdata(take);
-    // console.log(take);
+    console.log(take);
   };
 
   const showModal = () => {
     setIsModalOpen(true);
+  };
+
+  const showeditModal = (val) => {
+    // console.log(val);
+    setEdititems(val);
+    editForm.setFieldsValue({
+      fname: val.fname,
+      lname: val.lname,
+      cost: val.cost,
+    });
+    setIsEditModalOpen(true);
   };
 
   const handleCancel = () => {
@@ -43,6 +58,7 @@ const Worker_page = () => {
     const box = {
       fname: values.fname,
       lname: values.lname,
+      cost: values.cost,
       status: true,
     };
     setWorkerRec(box);
@@ -50,11 +66,27 @@ const Worker_page = () => {
     callData();
   };
 
-  const updateItems = async (e, val) => {
-    console.log(e);
+  const oneditFinish = async (val) => {
+    // console.log(val);
+    // console.log(editItems);
+    // updateWorkerRec()
     const box = {
       fname: val.fname,
       lname: val.lname,
+      cost: val.cost,
+      status: editItems.status,
+    };
+    await updateWorkerRec(editItems.id, box);
+    callData();
+    setIsEditModalOpen(false);
+  };
+
+  const updateItems = async (e, val) => {
+    // console.log(e);
+    const box = {
+      fname: val.fname,
+      lname: val.lname,
+      cost: val.cost,
       status: e,
     };
     await updateWorkerRec(val.id, box);
@@ -80,30 +112,46 @@ const Worker_page = () => {
       key: "lname",
     },
     {
-      title: "จัดการ",
-      key: "action",
+      title: "ค่าแรง",
+      dataIndex: "cost",
+      key: "cost",
+    },
+    {
+      title: "อยู่หรือไม่",
+      key: "action1",
       render: (_, record) => (
-        <Flex justify="space-around" align="start" style={{ width: "auto" }}>
-          {/* <a>Invite {record.name}</a>
-          <a>Delete</a> */}
-          <Switch
-            checkedChildren="อยู่"
-            unCheckedChildren="ไม่อยู่"
-            value={record.status}
-            onClick={(e) => updateItems(e, record)}
-          />
-          <Popconfirm
-            title="ลบรายการ"
-            description="ต้องการลบรายการนี้หรือไม่ ?"
-            onConfirm={() => confirm(record.id)}
-            okText="ตกลง"
-            cancelText="ยกเลิก"
-          >
-            <Button type="primary" danger>
-              ลบคนงาน
-            </Button>
-          </Popconfirm>
-        </Flex>
+        <Switch
+          checkedChildren="อยู่"
+          unCheckedChildren="ไม่อยู่"
+          value={record.status}
+          onClick={(e) => updateItems(e, record)}
+        />
+      ),
+    },
+    {
+      title: "แก้ไข",
+      key: "action2",
+      render: (_, record) => (
+        <Button type="primary" onClick={() => showeditModal(record)}>
+          แก้ไข
+        </Button>
+      ),
+    },
+    {
+      title: "ลบ",
+      key: "action3",
+      render: (_, record) => (
+        <Popconfirm
+          title="ลบรายการ"
+          description="ต้องการลบรายการนี้หรือไม่ ?"
+          onConfirm={() => confirm(record.id)}
+          okText="ตกลง"
+          cancelText="ยกเลิก"
+        >
+          <Button type="primary" danger>
+            ลบคนงาน
+          </Button>
+        </Popconfirm>
       ),
     },
   ];
@@ -113,7 +161,7 @@ const Worker_page = () => {
       <Modal
         title="เพิ่มคนงาน"
         open={isModalOpen}
-        onOk={() => form.submit()}
+        onOk={() => createForm.submit()}
         onCancel={handleCancel}
         okText="ตกลง"
         cancelText="ยกเลิก"
@@ -123,7 +171,7 @@ const Worker_page = () => {
           onFinish={onFinish}
           autoComplete="off"
           layout="vertical"
-          form={form}
+          form={createForm}
         >
           <Form.Item
             label="ชื่อ"
@@ -149,6 +197,74 @@ const Worker_page = () => {
             ]}
           >
             <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="ค่าแรง"
+            name="cost"
+            rules={[
+              {
+                required: true,
+                message: "โปรดกรอกค่าแรง!",
+              },
+            ]}
+          >
+            <InputNumber style={{ width: "100%" }} />
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title="แก้ไขคนงาน"
+        open={iseditModalOpen}
+        onOk={() => editForm.submit()}
+        onCancel={() => setIsEditModalOpen(!iseditModalOpen)}
+        okText="ตกลง"
+        cancelText="ยกเลิก"
+      >
+        <Form
+          name="editform"
+          onFinish={oneditFinish}
+          autoComplete="off"
+          layout="vertical"
+          form={editForm}
+        >
+          <Form.Item
+            label="ชื่อ"
+            name="fname"
+            rules={[
+              {
+                required: true,
+                message: "โปรดกรอกชื่อ!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="นามสกุล"
+            name="lname"
+            rules={[
+              {
+                required: true,
+                message: "โปรดกรอกชื่อนามสกุล!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            label="ค่าแรง"
+            name="cost"
+            rules={[
+              {
+                required: true,
+                message: "โปรดกรอกค่าแรง!",
+              },
+            ]}
+          >
+            <InputNumber style={{ width: "100%" }} />
           </Form.Item>
         </Form>
       </Modal>

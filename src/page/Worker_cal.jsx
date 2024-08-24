@@ -16,7 +16,7 @@ const Worker_cal = () => {
   const [bigdata, setBigdata] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rangedate, setRangedate] = useState([]);
-  const [costmoney, setCostmoney] = useState(0);
+  // const [costmoney, setCostmoney] = useState(0);
   const [bigbox, setBigbox] = useState({});
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const Worker_cal = () => {
   };
 
   const ondateChange = (date, dateString) => {
-    console.log(dateString);
+    // console.log(dateString);
     setRangedate(dateString);
     // setCurdate(dateString);
     // callData(dateString);
@@ -42,6 +42,10 @@ const Worker_cal = () => {
 
   const showModal = async (value) => {
     const take2 = await getWorkertimebyidRec(value.id);
+
+    const costmoney =
+      bigdata[bigdata.findIndex((item) => item.id === value.id)].cost;
+    // console.log(costmoney);
     let workcnt = 0.0;
     let borrowcnt = 0;
     take2.map((item) => {
@@ -81,9 +85,9 @@ const Worker_cal = () => {
         <Button
           type="primary"
           onClick={() => {
-            rangedate.length > 0 && costmoney !== 0
+            rangedate.length > 0
               ? showModal(record)
-              : message.info("โปรดเลือกวันที่ และกำหนดค่าแรง");
+              : message.info("โปรดเลือกวันที่");
           }}
         >
           คำนวณ
@@ -116,8 +120,6 @@ const Worker_cal = () => {
       <Flex justify="center" align="center">
         กำหนดวัน :
         <RangePicker format={"DD-MM-YYYY"} onChange={ondateChange} />
-        ค่าแรง :
-        <InputNumber value={costmoney} onChange={(e) => setCostmoney(e)} />
       </Flex>
       <br />
       <Table columns={columns} dataSource={bigdata} />
