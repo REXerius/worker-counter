@@ -10,6 +10,7 @@ import {
   InputNumber,
 } from "antd";
 const { RangePicker } = DatePicker;
+import "./Worker.css";
 
 const Worker_cal = () => {
   const { getWorkertimebyidRec, getWorkerRec } = rt_database();
@@ -119,7 +120,11 @@ const Worker_cal = () => {
       </Modal>
       <Flex justify="center" align="center">
         กำหนดวัน :
-        <RangePicker format={"DD-MM-YYYY"} onChange={ondateChange} />
+        <RangePicker
+          popupClassName="dateRangePicker"
+          format={"DD-MM-YYYY"}
+          onChange={ondateChange}
+        />
       </Flex>
       <br />
       <Table columns={columns} dataSource={bigdata} />

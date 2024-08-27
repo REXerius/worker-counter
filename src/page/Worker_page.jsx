@@ -268,14 +268,23 @@ const Worker_page = () => {
           </Form.Item>
         </Form>
       </Modal>
-      <Flex justify="space-around" align="start">
-        <div>รายชื่อคนงาน</div>
-        <Button type="primary" onClick={showModal}>
-          + เพิ่มคนงาน
-        </Button>
-      </Flex>
-      <br />
-      <Table columns={columns} dataSource={bigdata} />
+      <div style={{ width: "100%", height: "100vh" }}>
+        <Flex justify="space-around" align="start">
+          <div>รายชื่อคนงาน</div>
+          <Button type="primary" onClick={showModal}>
+            + เพิ่มคนงาน
+          </Button>
+        </Flex>
+        <br />
+        <Table
+          columns={columns}
+          dataSource={bigdata}
+          scroll={{
+            x: 700,
+            y: 500,
+          }}
+        />
+      </div>
     </>
   );
 };
