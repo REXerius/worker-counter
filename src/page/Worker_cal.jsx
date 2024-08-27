@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
 import rt_database from "../components/rt_database";
-import {
-  DatePicker,
-  Table,
-  Button,
-  Flex,
-  Modal,
-  message,
-  InputNumber,
-} from "antd";
+import { DatePicker, Table, Button, Flex, Modal, message, Divider } from "antd";
 const { RangePicker } = DatePicker;
 import "./Worker.css";
 
@@ -118,16 +110,17 @@ const Worker_cal = () => {
           "loading..."
         )}
       </Modal>
-      <Flex justify="center" align="center">
-        กำหนดวัน :
+      <div style={{ width: "100%", height: "auto" }}>
+        <Divider>กำหนดวัน</Divider>
         <RangePicker
           popupClassName="dateRangePicker"
           format={"DD-MM-YYYY"}
           onChange={ondateChange}
         />
-      </Flex>
-      <br />
-      <Table columns={columns} dataSource={bigdata} />
+        <Divider>--</Divider>
+        <br />
+        <Table columns={columns} dataSource={bigdata} />
+      </div>
     </>
   );
 };

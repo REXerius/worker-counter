@@ -30,6 +30,7 @@ function App() {
             width: window.innerWidth < 1001 ? "100%" : "50%",
             height: "auto",
           }}
+          styles={{ body: { padding: 0 } }}
         >
           {sc === "Worker" ? (
             <Worker_page />

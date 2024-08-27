@@ -310,33 +310,33 @@ const Worker_time = () => {
           </Flex>
         </Form>
       </Modal>
-
-      <Flex justify="space-around" align="start" style={{ width: "auto" }}>
-        <Switch
-          checkedChildren="กรอกแล้ว"
-          unCheckedChildren="ยังไม่กรอก"
-          value={showtype}
-          onChange={() => setShowtype(!showtype)}
-        />
-        <DatePicker
-          onChange={ondateChange}
-          defaultValue={dayjs()}
-          format={"DD-MM-YYYY"}
-        />
-      </Flex>
-      <br />
-
-      {showtype ? (
-        <Table
-          columns={columns2}
-          dataSource={bigdata.filter((item) => item.timestamps?.worker_id)}
-        />
-      ) : (
-        <Table
-          columns={columns}
-          dataSource={bigdata.filter((item) => !item.timestamps?.worker_id)}
-        />
-      )}
+      <div style={{ width: "100%", height: "auto" }}>
+        <Flex justify="space-around" align="start" style={{ width: "auto" }}>
+          <Switch
+            checkedChildren="กรอกแล้ว"
+            unCheckedChildren="ยังไม่กรอก"
+            value={showtype}
+            onChange={() => setShowtype(!showtype)}
+          />
+          <DatePicker
+            onChange={ondateChange}
+            defaultValue={dayjs()}
+            format={"DD-MM-YYYY"}
+          />
+        </Flex>
+        <br />
+        {showtype ? (
+          <Table
+            columns={columns2}
+            dataSource={bigdata.filter((item) => item.timestamps?.worker_id)}
+          />
+        ) : (
+          <Table
+            columns={columns}
+            dataSource={bigdata.filter((item) => !item.timestamps?.worker_id)}
+          />
+        )}
+      </div>
     </>
   );
 };
