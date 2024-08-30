@@ -329,11 +329,17 @@ const Worker_time = () => {
           <Table
             columns={columns2}
             dataSource={bigdata.filter((item) => item.timestamps?.worker_id)}
+            scroll={{
+              x: 500,
+            }}
           />
         ) : (
           <Table
             columns={columns}
             dataSource={bigdata.filter((item) => !item.timestamps?.worker_id)}
+            scroll={{
+              x: 500,
+            }}
           />
         )}
       </div>

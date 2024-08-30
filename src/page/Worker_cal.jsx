@@ -1,15 +1,6 @@
 import React, { useState, useEffect } from "react";
 import rt_database from "../components/rt_database";
-import {
-  DatePicker,
-  Table,
-  Button,
-  Flex,
-  Modal,
-  message,
-  Divider,
-  Skeleton,
-} from "antd";
+import { DatePicker, Table, Descriptions, Divider, Skeleton } from "antd";
 const { RangePicker } = DatePicker;
 import "./Worker.css";
 
@@ -21,6 +12,30 @@ const Worker_cal = () => {
   // const [costmoney, setCostmoney] = useState(0);
   const [bigbox, setBigbox] = useState({});
   const [loading, setLoading] = useState(false);
+
+  const [desitems, setDesitems] = useState([
+    {
+      key: "1",
+      label: "เวลาทั้งหมด (รวม)",
+      children: 0,
+    },
+    {
+      key: "2",
+      label: "รายได้ทั้งหมด (รวม)",
+      children: 0,
+    },
+    {
+      key: "3",
+      label: "เบิกทั้งหมด (รวม)",
+      children: 0,
+    },
+    {
+      key: "4",
+      label: "ยอดรวม + หักลบ (รวม)",
+      span: 2,
+      children: 0,
+    },
+  ]);
 
   useEffect(() => {
     callData();
@@ -61,8 +76,42 @@ const Worker_cal = () => {
         };
       })
     );
+    // const fixdes =
+    let cnt_sumtime = 0,
+      cnt_sumcost = 0,
+      cnt_withdraw = 0,
+      cnt_total = 0;
+    newBigdata.map((item) => {
+      cnt_sumtime += item.sumtime;
+      cnt_sumcost += item.sumcost;
+      cnt_withdraw += item.withdraw;
+      cnt_total += item.total;
+    });
+    setDesitems([
+      {
+        key: "1",
+        label: "เวลาทั้งหมด (รวม)",
+        children: cnt_sumtime,
+      },
+      {
+        key: "2",
+        label: "รายได้ทั้งหมด (รวม)",
+        children: cnt_sumcost,
+      },
+      {
+        key: "3",
+        label: "เบิกทั้งหมด (รวม)",
+        children: cnt_withdraw,
+      },
+      {
+        key: "4",
+        label: "ยอดรวม + หักลบ (รวม)",
+        span: 2,
+        children: cnt_total,
+      },
+    ]);
     setBigdata(newBigdata);
-    // console.log(newBigdata);
+
     // setCurdate(dateString);
     // callData(dateString);
     // setLoading(true);
@@ -181,9 +230,22 @@ const Worker_cal = () => {
             format={"DD-MM-YYYY"}
             onChange={ondateChange}
           />
-          <Divider>--</Divider>
+          <div style={{ padding: 10 }}>
+            <Descriptions
+              title="ยอมรวมของคนงานทั้งหมด"
+              layout="vertical"
+              items={desitems}
+            />
+          </div>
+          <Divider />
           <br />
-          <Table columns={columns} dataSource={bigdata} />
+          <Table
+            columns={columns}
+            dataSource={bigdata}
+            scroll={{
+              x: 700,
+            }}
+          />
         </div>
       ) : (
         <Skeleton active />
