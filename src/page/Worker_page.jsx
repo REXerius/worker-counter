@@ -31,7 +31,7 @@ const Worker_page = () => {
   const callData = async () => {
     const take = await getWorkerRec();
     setBigdata(take);
-    console.log(take);
+    // console.log(take);
   };
 
   const showModal = () => {

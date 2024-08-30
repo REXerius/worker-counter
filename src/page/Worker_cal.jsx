@@ -124,6 +124,9 @@ const Worker_cal = () => {
 
   const findValue = async (value, dt) => {
     const take2 = await getWorkertimebyidRec(value.id);
+    if (value.id === "-O52Ealotyi_bCsMRGBf") {
+      console.log(take2);
+    }
 
     const costmoney =
       bigdata[bigdata.findIndex((item) => item.id === value.id)].cost;

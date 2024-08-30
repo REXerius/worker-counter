@@ -163,6 +163,37 @@ const rt_database = () => {
     return data;
   };
 
+  const getWorkerTimeRec = async () => {
+    let data = [];
+    await get(worker_timeRef)
+      .then((sn) => {
+        if (sn.exists()) {
+          const workerArray = Object.entries(sn.val()).map(([id, data]) => ({
+            id,
+            ...data,
+          }));
+          data = workerArray;
+        } else {
+          console.log("no data");
+        }
+      })
+      .catch((er) => {
+        console.error("Error fetching data:", er.message);
+      });
+
+    return data;
+  };
+
+  const deleteWorkerTimeRec = async (id) => {
+    await remove(ref(database, `worker_time_stamp/${id}`))
+      .then(() => {
+        console.log("Worker record deleted successfully");
+      })
+      .catch((er) => {
+        console.error("Error deleting record:", er.message);
+      });
+  };
+
   return {
     database,
     getWorkerRec,
@@ -174,6 +205,8 @@ const rt_database = () => {
     setWorkertimeRec,
     updateWorkertimeRec,
     getWorkertimebyidRec,
+    getWorkerTimeRec,
+    deleteWorkerTimeRec,
   };
 };
 

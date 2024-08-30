@@ -1,13 +1,14 @@
 import { useState } from "react";
 import "./App.css";
-import Worker_page from "./page/Worker_page";
-import Worker_time from "./page/Worker_Time";
-import Worker_cal from "./page/Worker_cal";
 import { Card, Segmented, Flex } from "antd";
+import Worker_page from "./page/Worker_page";
+import Worker_time from "./page/Worker_time";
+import Worker_cal from "./page/Worker_cal";
+import Worker_report from "./page/Worker_report";
 
 function App() {
   const [sc, setSc] = useState("Worker");
-  const selectOpt = ["Worker", "Time_Stamp", "Calculate"];
+  const selectOpt = ["Worker", "Time_Stamp", "Calculate", "Report"];
 
   return (
     <>
@@ -36,8 +37,10 @@ function App() {
             <Worker_page />
           ) : sc === "Time_Stamp" ? (
             <Worker_time />
-          ) : (
+          ) : sc === "Calculate" ? (
             <Worker_cal />
+          ) : (
+            <Worker_report />
           )}
         </Card>
       </Flex>
